@@ -229,4 +229,22 @@ class GoogleController extends Controller
 
         return redirect('/login')->with('success', 'You have been logged out successfully.');
     }
+
+    /**
+     * Handle profile update for height and weight.
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'height' => 'required|numeric|min:100|max:250',
+            'weight' => 'required|numeric|min:30|max:300',
+        ]);
+
+        $user = Auth::user();
+        $user->height = $request->height;
+        $user->weight = $request->weight;
+        $user->save();
+
+        return redirect()->route('dashboard')->with('success', 'Profil berhasil diperbarui!');
+    }
 }
